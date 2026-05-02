@@ -1,12 +1,23 @@
-use askama::Template;
+use crate::{templates::*, user::*};
 use axum::{
-    Router,
+    Form, Router,
+    extract::Query,
     http::StatusCode,
-    response::{Html, IntoResponse, Response},
+    response::{IntoResponse, Redirect, Response},
     routing::{get, post},
 };
+use axum_login::{
+    AuthManagerLayerBuilder, login_required,
+    tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer, cookie::time::Duration},
+};
+use tower_sessions_file_store::FileSessionStorage;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
+mod templates;
+mod user;
+
+type AuthSession = axum_login::AuthSession<Backend>;
 
 #[tokio::main]
 async fn main() {
@@ -18,32 +29,48 @@ async fn main() {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let router = Router::new()
-        .route("/", get(home))
-        .route("/calculate", post(calculate));
+    // Session layer.
+    let session_store = FileSessionStorage::new();
+    let session_layer = SessionManagerLayer::new(session_store.clone())
+        .with_expiry(Expiry::OnInactivity(Duration::seconds(60 * 60)));
+    let deletion_task = tokio::task::spawn(
+        session_store
+            .clone()
+            .continuously_delete_expired(tokio::time::Duration::from_secs(60 * 60)),
+    );
+
+    // Auth service.
+    let backend = Backend::default();
+    let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
+
+    let app = Router::new()
+        .route("/home", get(home))
+        .route("/characters", get(characters))
+        .route("/campaigns", get(campaigns))
+        .route("/settings", get(settings))
+        .route("/items", get(items))
+        .route("/classes", get(classes))
+        .route("/notes", get(notes))
+        .route_layer(login_required!(Backend, login_url = "/login"))
+        .route("/login", get(login_page).post(login))
+        .route("/logout", get(logout))
+        .layer(auth_layer);
 
     info!("Starting server on port 3000");
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-    axum::serve(listener, router).await.unwrap();
+    axum::serve(listener, app).await.unwrap();
+
+    deletion_task.await;
 }
 
-async fn home() -> impl IntoResponse {
+async fn home(auth_session: AuthSession) -> impl IntoResponse {
+    let name = auth_session.user.expect("Protected Page").username;
+    info!("{} loaded homeage", name);
     let template = HomepageTemplate {};
-    HtmlTemplate(template)
+    HtmlTemplate(template).into_response()
 }
 
-struct StatField {
-    id: String,
-    value: i32,
-}
-
-#[derive(Template)]
-#[template(path = "stat_response.html")]
-struct StatResponseTemplate {
-    fields: Vec<StatField>,
-}
-
-async fn calculate(body: String) -> impl IntoResponse {
+async fn calculate(auth_session: AuthSession, body: String) -> impl IntoResponse {
     let args: Vec<&str> = body.split('=').collect();
     let val: i32 = args[1].parse().unwrap_or(0);
 
@@ -62,29 +89,67 @@ async fn calculate(body: String) -> impl IntoResponse {
     HtmlTemplate(template)
 }
 
-#[derive(Template)]
-#[template(path = "homepage.html")]
-struct HomepageTemplate;
+async fn characters(auth_session: AuthSession) -> impl IntoResponse {
+    "under construction"
+}
 
-/// A wrapper type that we'll use to encapsulate HTML parsed by askama into valid HTML for axum to serve.
-struct HtmlTemplate<T>(T);
+async fn campaigns(auth_session: AuthSession) -> impl IntoResponse {
+    "under construction"
+}
 
-/// Allows us to convert Askama HTML templates into valid HTML for axum to serve in the response.
-impl<T> IntoResponse for HtmlTemplate<T>
-where
-    T: Template,
-{
-    fn into_response(self) -> Response {
-        // Attempt to render the template with askama
-        match self.0.render() {
-            // If we're able to successfully parse and aggregate the template, serve it
-            Ok(html) => Html(html).into_response(),
-            // If we're not, return an error or some bit of fallback HTML
-            Err(err) => (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                format!("Failed to render template. Error: {}", err),
-            )
-                .into_response(),
+async fn settings(auth_session: AuthSession) -> impl IntoResponse {
+    "under construction"
+}
+
+async fn items(auth_session: AuthSession) -> impl IntoResponse {
+    "under construction"
+}
+
+async fn classes(auth_session: AuthSession) -> impl IntoResponse {
+    "under construction"
+}
+
+async fn notes(auth_session: AuthSession) -> impl IntoResponse {
+    "under construction"
+}
+
+async fn login_page(Query(NextUrl { next }): Query<NextUrl>) -> impl IntoResponse {
+    let template = LoginTemplate { next };
+    HtmlTemplate(template)
+}
+
+async fn login(mut auth_session: AuthSession, Form(creds): Form<Credentials>) -> Response {
+    let user = match auth_session.authenticate(creds.clone()).await {
+        Ok(Some(user)) => user,
+        Ok(None) => {
+            let login_url = if let Some(next) = creds.next {
+                format!("/login?next={next}")
+            } else {
+                "/login".to_string()
+            };
+
+            info!("redirecting to login page");
+
+            return Redirect::to(&login_url).into_response();
         }
+        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+    };
+
+    if auth_session.login(&user).await.is_err() {
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+    }
+
+    if let Some(ref next) = creds.next {
+        Redirect::to(next)
+    } else {
+        Redirect::to("/")
+    }
+    .into_response()
+}
+
+async fn logout(mut auth_session: AuthSession) -> impl IntoResponse {
+    match auth_session.logout().await {
+        Ok(_) => Redirect::to("/login").into_response(),
+        Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     }
 }

@@ -30,6 +30,7 @@ pub struct HomepageTemplate {
     pub username: String,
 }
 
+#[derive(Debug)]
 pub struct StatField {
     pub id: String,
     pub value: i32,

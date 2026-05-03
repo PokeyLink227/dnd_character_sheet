@@ -5,9 +5,10 @@
 
 {% block content %}
 
-<p>Strength: <input type="number" hx-post="/calculate" id="fname" name="fname"/></p>
-<p>Strength Modifier: <span id="strength-modifier" hx-swap-oob="true"></span></p>
-
-<p>Acrobatics Modifier: <span id="acrobatics-modifier" hx-swap-oob="true"></span></p>
+<p>Base Strength: <input type="number" hx-post="/calculate" id="base_strength" name="base_strength"/></p>
+<p>Strength: <span id="strength" hx-swap-oob="true"></span></p>
+<p>Strength Modifier: <span id="strength_modifier" hx-swap-oob="true"></span></p>
+<p>BAB: <span id="bab" hx-swap-oob="true"></span></p>
+<p>Attack: <span id="attack" hx-swap-oob="true"></span></p>
 
 {% endblock %}

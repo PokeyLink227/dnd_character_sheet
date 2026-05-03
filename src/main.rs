@@ -1,4 +1,9 @@
-use crate::{templates::*, user::*};
+use std::{
+    collections::HashMap,
+    sync::{Arc, Mutex},
+};
+
+use crate::{sheet::*, templates::*, user::*};
 use axum::{
     Form, Router,
     extract::Query,
@@ -15,6 +20,7 @@ use tower_sessions_file_store::FileSessionStorage;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
+mod sheet;
 mod templates;
 mod user;
 
@@ -46,9 +52,24 @@ async fn main() {
 
     let assets_path = std::env::current_dir().unwrap();
 
+    let mut val_map: [i32; SHEET_NUM_STATS] = [17, 17, 4, 8, 0];
+    let temp_calc_route_wrapper = async move |auth_session: AuthSession, body: String| -> Response {
+        let args: Vec<&str> = body.split('=').collect();
+        let Some(field) = SheetField::from_str(args[0]) else {
+            return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+};
+        let val: i32 = args[1].parse().unwrap_or(0);
+
+        let updated_fields = calc_route(&mut val_map, field, val);
+        let template = StatResponseTemplate {
+            fields: updated_fields,
+        };
+        HtmlTemplate(template).into_response()
+    };
+
     let app = Router::new()
         .route("/", get(home))
-        .route("/calculate", post(calculate))
+        .route("/calculate", post(temp_calc_route_wrapper))
         .route("/characters", get(characters))
         .route("/campaigns", get(campaigns))
         .route("/settings", get(settings))
@@ -85,11 +106,11 @@ async fn calculate(auth_session: AuthSession, body: String) -> impl IntoResponse
         fields: vec![
             StatField {
                 id: "strength-modifier".to_string(),
-                value: (val - 10) / 2,
+                value: val / 2 - 5,
             },
             StatField {
                 id: "acrobatics-modifier".to_string(),
-                value: (val - 10) / 2 + 11,
+                value: val / 2 - 5 + 11,
             },
         ],
     };

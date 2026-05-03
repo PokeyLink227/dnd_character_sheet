@@ -45,6 +45,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/home", get(home))
+        .route("/calculate", post(calculate))
         .route("/characters", get(characters))
         .route("/campaigns", get(campaigns))
         .route("/settings", get(settings))

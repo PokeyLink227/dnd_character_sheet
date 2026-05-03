@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}{{ title }}{% endblock %}</title>
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"></script>
+        {% block basehead %}{% endblock %}
+    </head>
+    <body>
+        <div id="content">
+        {% block basecontent %}<p>Placeholder content</p>{% endblock %}
+        </div>
+    </body>
+</html>

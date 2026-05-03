@@ -2,11 +2,12 @@ use std::collections::HashMap;
 
 use axum_login::{AuthUser, AuthnBackend, UserId};
 use serde::Deserialize;
+use tracing::info;
 
 #[derive(Debug, Clone)]
 pub struct User {
     pub username: String,
-    id: i64,
+    pub id: i64,
     pw_hash: Vec<u8>,
 }
 
@@ -63,6 +64,9 @@ impl AuthnBackend for Backend {
             .users
             .values()
             .find(|user| user.username == creds.username);
+        if let Some(ref user) = maybe_user {
+            info!("[{}]({}) - authenticated", user.username, user.id);
+        }
         Ok(maybe_user.cloned())
         // Ok(self.users.get(&username).cloned())
     }

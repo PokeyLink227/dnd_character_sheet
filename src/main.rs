@@ -73,7 +73,6 @@ async fn main() {
 
 async fn home(auth_session: AuthSession) -> impl IntoResponse {
     let name = auth_session.user.expect("Protected Page").username;
-    info!("{} loaded homeage", name);
     let template = HomepageTemplate { username: name };
     HtmlTemplate(template).into_response()
 }
@@ -145,6 +144,8 @@ async fn login(mut auth_session: AuthSession, Form(creds): Form<Credentials>) ->
 
     if auth_session.login(&user).await.is_err() {
         return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+    } else {
+        info!("[{}]({}) - logged in", user.username, user.id);
     }
 
     if let Some(ref next) = creds.next {
@@ -157,7 +158,11 @@ async fn login(mut auth_session: AuthSession, Form(creds): Form<Credentials>) ->
 
 async fn logout(mut auth_session: AuthSession) -> impl IntoResponse {
     match auth_session.logout().await {
-        Ok(_) => Redirect::to("/login").into_response(),
+        Ok(Some(user)) => {
+            info!("[{}]({}) - logged out", user.username, user.id,);
+            Redirect::to("/login").into_response()
+        }
+        Ok(None) => Redirect::to("/login").into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     }
 }

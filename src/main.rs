@@ -10,6 +10,7 @@ use axum_login::{
     AuthManagerLayerBuilder, login_required,
     tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer, cookie::time::Duration},
 };
+use tower_http::services::ServeDir;
 use tower_sessions_file_store::FileSessionStorage;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
@@ -43,8 +44,10 @@ async fn main() {
     let backend = Backend::default();
     let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
+    let assets_path = std::env::current_dir().unwrap();
+
     let app = Router::new()
-        .route("/home", get(home))
+        .route("/", get(home))
         .route("/calculate", post(calculate))
         .route("/characters", get(characters))
         .route("/campaigns", get(campaigns))
@@ -55,7 +58,11 @@ async fn main() {
         .route_layer(login_required!(Backend, login_url = "/login"))
         .route("/login", get(login_page).post(login))
         .route("/logout", get(logout))
-        .layer(auth_layer);
+        .layer(auth_layer)
+        .nest_service(
+            "/assets",
+            ServeDir::new(format!("{}/assets", assets_path.to_str().unwrap())),
+        );
 
     info!("Starting server on port 3000");
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();

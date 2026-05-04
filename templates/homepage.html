@@ -4,11 +4,40 @@
 
 
 {% block content %}
-
-<p>Base Strength: <input type="number" hx-post="/calculate" id="base_strength" name="base_strength"/></p>
-<p>Strength: <span id="strength" hx-swap-oob="true"></span></p>
-<p>Strength Modifier: <span id="strength_modifier" hx-swap-oob="true"></span></p>
+<div style="display: flex; flex-direction: row">
+    <div>
+    <p>Base Strength: <input type="number" hx-post="/calculate" id="base_strength" name="base_strength"/></p>
+    <p>Strength: <span id="strength" hx-swap-oob="true"></span></p>
+    <p>Strength Modifier: <span id="strength_modifier" hx-swap-oob="true"></span></p>
+    </div>
+    <div>
+    <p>Base intelligence: <input type="number" hx-post="/calculate" id="base_intelligence" name="base_intelligence"/></p>
+    <p>intelligence: <span id="intelligence" hx-swap-oob="true"></span></p>
+    <p>intelligence Modifier: <span id="intelligence_modifier" hx-swap-oob="true"></span></p>
+    </div>
+    <div>
+    <p>Base wisdom: <input type="number" hx-post="/calculate" id="base_wisdom" name="base_wisdom"/></p>
+    <p>wisdom: <span id="wisdom" hx-swap-oob="true"></span></p>
+    <p>wisdom Modifier: <span id="wisdom_modifier" hx-swap-oob="true"></span></p>
+    </div>
+    <div>
+    <p>Base dexterity: <input type="number" hx-post="/calculate" id="base_dexterity" name="base_dexterity"/></p>
+    <p>dexterity: <span id="dexterity" hx-swap-oob="true"></span></p>
+    <p>dexterity Modifier: <span id="dexterity_modifier" hx-swap-oob="true"></span></p>
+    </div>
+    <div>
+    <p>Base constitution: <input type="number" hx-post="/calculate" id="base_constitution" name="base_constitution"/></p>
+    <p>constitution: <span id="constitution" hx-swap-oob="true"></span></p>
+    <p>constitution Modifier: <span id="constitution_modifier" hx-swap-oob="true"></span></p>
+    </div>
+    <div>
+    <p>Base charisma: <input type="number" hx-post="/calculate" id="base_charisma" name="base_charisma"/></p>
+    <p>charisma: <span id="charisma" hx-swap-oob="true"></span></p>
+    <p>charisma Modifier: <span id="charisma_modifier" hx-swap-oob="true"></span></p>
+    </div>
+</div>
 <p>BAB: <span id="bab" hx-swap-oob="true"></span></p>
 <p>Attack: <span id="attack" hx-swap-oob="true"></span></p>
+<p>AC: <span id="ac" hx-swap-oob="true"></span></p>
 
 {% endblock %}

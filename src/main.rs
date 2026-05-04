@@ -52,20 +52,23 @@ async fn main() {
 
     let assets_path = std::env::current_dir().unwrap();
 
-    let mut val_map: [i32; SHEET_NUM_STATS] = [17, 17, 4, 8, 0];
-    let temp_calc_route_wrapper = async move |auth_session: AuthSession, body: String| -> Response {
-        let args: Vec<&str> = body.split('=').collect();
-        let Some(field) = SheetField::from_str(args[0]) else {
-            return StatusCode::INTERNAL_SERVER_ERROR.into_response();
-};
-        let val: i32 = args[1].parse().unwrap_or(0);
+    let mut val_map: [i32; SHEET_NUM_STATS] = [
+        17, 17, 4, 17, 17, 4, 17, 17, 4, 17, 17, 4, 17, 17, 4, 17, 17, 4, 8, 0, 14,
+    ];
+    let temp_calc_route_wrapper =
+        async move |auth_session: AuthSession, body: String| -> Response {
+            let args: Vec<&str> = body.split('=').collect();
+            let Some(field) = SheetField::from_str(args[0]) else {
+                return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+            };
+            let val: i32 = args[1].parse().unwrap_or(0);
 
-        let updated_fields = calc_route(&mut val_map, field, val);
-        let template = StatResponseTemplate {
-            fields: updated_fields,
+            let updated_fields = calc_route(&mut val_map, field, val);
+            let template = StatResponseTemplate {
+                fields: updated_fields,
+            };
+            HtmlTemplate(template).into_response()
         };
-        HtmlTemplate(template).into_response()
-    };
 
     let app = Router::new()
         .route("/", get(home))

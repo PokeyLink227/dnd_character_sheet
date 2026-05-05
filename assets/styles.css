@@ -1,3 +1,16 @@
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+  --primary-stat-card-outer-border-width: 2px;
+  --primary-stat-card-inner-border-width: 1px;
+  --primary-stat-card-border-radius: 0.25rem;
+}
+
+
+
 .top-navbar {
     padding: 1rem;
     background-color: #505050;
@@ -27,4 +40,58 @@ html, body {
     display: flex;
     flex-direction: column;
     height: 100%;
+}
+
+.primary-stat-card {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    width: 8rem;
+    height: 8rem;
+    border: var(--primary-stat-card-outer-border-width) solid red;
+    border-radius: var(--primary-stat-card-border-radius);
+}
+
+/* Stat Card Styling */
+
+.primary-stat-card .modifier {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+
+.primary-stat-card .bottom-bar {
+    display: flex;
+    flex-direction: row;
+}
+
+.primary-stat-card .bottom-bar > * {
+    border-radius: 0;
+    flex-grow: 1;
+    text-align: center;
+    width: 33%;
+    height: 1.5rem;
+    border: var(--primary-stat-card-inner-border-width) solid red;
+    border-bottom: none;
+}
+
+.primary-stat-card .bottom-bar > *:focus {
+    outline: none;
+}
+
+.primary-stat-card .base {
+    border-left: none;
+    border-right: none;
+    border-bottom-left-radius: var(--primary-stat-card-border-radius);
+}
+
+.primary-stat-card .total {
+    border-right: none;
+    border-left: none;
+    border-bottom-right-radius: var(--primary-stat-card-border-radius);
 }

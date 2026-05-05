@@ -2,39 +2,40 @@
 
 {% block title %}Home{% endblock %}
 
+{% macro stat_card(stat) %}
+<div class="primary-stat-card">
+    <div class="label">{{ stat | capitalize }}</div>
+    <div class="modifier">
+        <div hx-swap-oob="true" id="{{ stat }}_modifier">+4</div>
+    </div>
+    <div class="bottom-bar">
+        <input
+            class="base"
+            hx-post="/calculate"
+            name="base_{{ stat }}"
+            id="base_{{ stat }}"
+        />
+        <input
+            class="temp"
+            hx-post="/calculate"
+            name="temp_{{ stat }}"
+            id="temp_{{ stat }}"
+        />
+        <div class="total">
+            <div hx-swap-oob="true" id="{{ stat }}"></div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
 
 {% block content %}
-<div style="display: flex; flex-direction: row">
-    <div>
-    <p>Base Strength: <input type="number" hx-post="/calculate" id="base_strength" name="base_strength"/></p>
-    <p>Strength: <span id="strength" hx-swap-oob="true"></span></p>
-    <p>Strength Modifier: <span id="strength_modifier" hx-swap-oob="true"></span></p>
-    </div>
-    <div>
-    <p>Base intelligence: <input type="number" hx-post="/calculate" id="base_intelligence" name="base_intelligence"/></p>
-    <p>intelligence: <span id="intelligence" hx-swap-oob="true"></span></p>
-    <p>intelligence Modifier: <span id="intelligence_modifier" hx-swap-oob="true"></span></p>
-    </div>
-    <div>
-    <p>Base wisdom: <input type="number" hx-post="/calculate" id="base_wisdom" name="base_wisdom"/></p>
-    <p>wisdom: <span id="wisdom" hx-swap-oob="true"></span></p>
-    <p>wisdom Modifier: <span id="wisdom_modifier" hx-swap-oob="true"></span></p>
-    </div>
-    <div>
-    <p>Base dexterity: <input type="number" hx-post="/calculate" id="base_dexterity" name="base_dexterity"/></p>
-    <p>dexterity: <span id="dexterity" hx-swap-oob="true"></span></p>
-    <p>dexterity Modifier: <span id="dexterity_modifier" hx-swap-oob="true"></span></p>
-    </div>
-    <div>
-    <p>Base constitution: <input type="number" hx-post="/calculate" id="base_constitution" name="base_constitution"/></p>
-    <p>constitution: <span id="constitution" hx-swap-oob="true"></span></p>
-    <p>constitution Modifier: <span id="constitution_modifier" hx-swap-oob="true"></span></p>
-    </div>
-    <div>
-    <p>Base charisma: <input type="number" hx-post="/calculate" id="base_charisma" name="base_charisma"/></p>
-    <p>charisma: <span id="charisma" hx-swap-oob="true"></span></p>
-    <p>charisma Modifier: <span id="charisma_modifier" hx-swap-oob="true"></span></p>
-    </div>
+<div style="display: flex; flex-direction: row; justify-content: space-around;">
+    {{ stat_card("strength") }}
+    {{ stat_card("dexterity") }}
+    {{ stat_card("constitution") }}
+    {{ stat_card("intelligence") }}
+    {{ stat_card("wisdom") }}
+    {{ stat_card("charisma") }}
 </div>
 <p>BAB: <span id="bab" hx-swap-oob="true"></span></p>
 <p>Attack: <span id="attack" hx-swap-oob="true"></span></p>

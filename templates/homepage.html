@@ -5,25 +5,30 @@
 {% macro stat_card(stat) %}
 <div class="primary-stat-card">
     <div class="label">{{ stat | capitalize }}</div>
-    <div class="modifier">
+    <div title="{{ stat | capitalize }} Modifier" class="modifier">
         <div hx-swap-oob="true" id="{{ stat }}_modifier">+4</div>
     </div>
     <div class="bottom-bar">
         <input
+            title="Base {{ stat | capitalize }} Score"
             class="base"
             hx-post="/calculate"
             name="base_{{ stat }}"
             id="base_{{ stat }}"
         />
         <input
+            title="Temporary {{ stat | capitalize }} Score"
             class="temp"
             hx-post="/calculate"
             name="temp_{{ stat }}"
             id="temp_{{ stat }}"
         />
-        <div class="total">
-            <div hx-swap-oob="true" id="{{ stat }}"></div>
-        </div>
+        <div
+            hx-swap-oob="innerHtml"
+            id="{{ stat }}"
+            class="total"
+            title="{{ stat | capitalize }} Score"
+        ></div>
     </div>
 </div>
 {% endmacro %}

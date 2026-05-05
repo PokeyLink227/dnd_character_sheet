@@ -34,6 +34,7 @@ html, body {
 }
 
 .primary-stat-card {
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -85,4 +86,7 @@ html, body {
     border-right: none;
     border-left: none;
     border-bottom-right-radius: var(--primary-stat-card-border-radius);
+}
+
+.primary-stat-card .bottom-bar input:focus: {
 }

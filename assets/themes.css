@@ -1,0 +1,13 @@
+/* TODO: determine if putting themes in a different file is a good idea */
+
+:root > .theme-dark {
+  --primary-stat-card-outer-border-width: 2px;
+  --primary-stat-card-inner-border-width: 1px;
+  --primary-stat-card-border-radius: 0.25rem;
+}
+
+:root > .theme-light {
+  --primary-stat-card-outer-border-width: 7px;
+  --primary-stat-card-inner-border-width: 2px;
+  --primary-stat-card-border-radius: 0.25rem;
+}

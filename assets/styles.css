@@ -38,6 +38,8 @@ html, body {
     height: 100%;
 }
 
+/* Stat Card Styling */
+
 .primary-stat-card {
     overflow: hidden;
     display: flex;
@@ -45,13 +47,11 @@ html, body {
     flex-shrink: 0;
     justify-content: center;
     align-items: center;
-    width: 8rem;
-    height: 8rem;
+    width: 7rem;
+    height: 7rem;
     border: var(--primary-stat-card-outer-border-width) solid red;
     border-radius: var(--primary-stat-card-border-radius);
 }
-
-/* Stat Card Styling */
 
 .primary-stat-card .modifier {
     flex-grow: 1;
@@ -84,14 +84,77 @@ html, body {
 .primary-stat-card .base {
     border-left: none;
     border-right: none;
-    border-bottom-left-radius: var(--primary-stat-card-border-radius);
 }
 
 .primary-stat-card .total {
     border-right: none;
     border-left: none;
-    border-bottom-right-radius: var(--primary-stat-card-border-radius);
 }
 
-.primary-stat-card .bottom-bar input:focus: {
+.primary-stat-card .bottom-bar input:focus {
+}
+
+
+.skill {
+    display: flex;
+    flex-direction: row;
+}
+
+.skill > .label {
+    flex-grow: 1;
+}
+
+
+
+
+
+
+.card {
+    padding: 0.5rem;
+    border: 1px solid oklch(44.6% 0.043 257.281);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    flex
+}
+
+.card > .label {
+
+}
+
+/* sheet styles */
+
+.main-sheet {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+@media (width < 70rem) {
+    .main-sheet {
+        flex-direction: column;
+    }
+}
+
+.main-sheet > .stats-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.main-sheet > .stats-area > .main-stats {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.main-sheet > .stats-area > .other-stats {
+    display: flex;
+    flex-direction: row;
+}
+
+.main-sheet > .stats-area > .other-stats > * {
+    flex: 1;
 }

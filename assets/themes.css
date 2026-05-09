@@ -3,7 +3,7 @@
 :root > .theme-dark {
   --primary-stat-card-outer-border-width: 2px;
   --primary-stat-card-inner-border-width: 1px;
-  --primary-stat-card-border-radius: 0.25rem;
+  --primary-stat-card-border-radius: 0.5rem;
 }
 
 :root > .theme-light {

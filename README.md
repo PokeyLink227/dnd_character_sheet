@@ -80,6 +80,10 @@ Login
     +-- Settings
 ```
 
+### Resources
+
+- lucide.dev/icons/
+
 ### Potential config formats for classes
 
 

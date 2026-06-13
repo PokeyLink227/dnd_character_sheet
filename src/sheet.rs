@@ -1,5 +1,9 @@
 use crate::{templates::*, user::*};
 
+use serde::{Deserialize, Serialize};
+
+use regex::Regex;
+
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u8)]
 pub enum SheetField {
@@ -24,6 +28,42 @@ pub enum SheetField {
     BAB = 18,
     Attack = 19,
     AC = 20,
+    acrobatics,
+    appraise,
+    bluff,
+    climb,
+    craft,
+    diplomacy,
+    disabledevice,
+    disguise,
+    escapeArtist,
+    fly,
+    handleAnimal,
+    heal,
+    knowledge_arcana,
+    knowledge_Dungeoneering,
+    knowledge_Engineering,
+    knowledge_Geography,
+    knowledge_history,
+    knowledge_local,
+    knowledge_nature,
+    knowledge_nobility,
+    knowledge_planes,
+    knowledge_religion,
+    linguistics,
+    perception,
+    perform_1,
+    perform_2,
+    profession_1,
+    profession_2,
+    ride,
+    sense_motive,
+    sleight_of_hand,
+    spellcraft,
+    stealth,
+    survival,
+    swim,
+    use_magic_device,
 }
 
 impl SheetField {
@@ -50,12 +90,48 @@ impl SheetField {
             "bab" => Some(Self::BAB),
             "attack" => Some(Self::Attack),
             "ac" => Some(Self::AC),
+            "acrobatics" => Some(Self::acrobatics),
+            "appraise" => Some(Self::appraise),
+            "bluff" => Some(Self::bluff),
+            "climb" => Some(Self::climb),
+            "craft" => Some(Self::craft),
+            "diplomacy" => Some(Self::diplomacy),
+            "disabledevice" => Some(Self::disabledevice),
+            "disguise" => Some(Self::disguise),
+            "escapeArtist" => Some(Self::escapeArtist),
+            "fly" => Some(Self::fly),
+            "handleAnimal" => Some(Self::handleAnimal),
+            "heal" => Some(Self::heal),
+            "knowledge_arcana" => Some(Self::knowledge_arcana),
+            "knowledge_Dungeoneering" => Some(Self::knowledge_Dungeoneering),
+            "knowledge_Engineering" => Some(Self::knowledge_Engineering),
+            "knowledge_Geography" => Some(Self::knowledge_Geography),
+            "knowledge_history" => Some(Self::knowledge_history),
+            "knowledge_local" => Some(Self::knowledge_local),
+            "knowledge_nature" => Some(Self::knowledge_nature),
+            "knowledge_nobility" => Some(Self::knowledge_nobility),
+            "knowledge_planes" => Some(Self::knowledge_planes),
+            "knowledge_religion" => Some(Self::knowledge_religion),
+            "linguistics" => Some(Self::linguistics),
+            "perception" => Some(Self::perception),
+            "perform_1" => Some(Self::perform_1),
+            "perform_2" => Some(Self::perform_1),
+            "profession_1" => Some(Self::profession_2),
+            "profession_2" => Some(Self::profession_2),
+            "ride" => Some(Self::ride),
+            "sense_motive" => Some(Self::sense_motive),
+            "sleight_of_hand" => Some(Self::sleight_of_hand),
+            "spellcraft" => Some(Self::spellcraft),
+            "stealth" => Some(Self::stealth),
+            "survival" => Some(Self::survival),
+            "swim" => Some(Self::swim),
+            "use_magic_device" => Some(Self::use_magic_device),
             _ => None,
         }
     }
 }
 
-pub const SHEET_NUM_STATS: usize = 21;
+pub const SHEET_NUM_STATS: usize = 57;
 
 static SHEET_STR_MAP: [&'static str; SHEET_NUM_STATS] = [
     "base_strength",
@@ -79,15 +155,60 @@ static SHEET_STR_MAP: [&'static str; SHEET_NUM_STATS] = [
     "bab",
     "attack",
     "ac",
+    "acrobatics",
+    "appraise",
+    "bluff",
+    "climb",
+    "craft",
+    "diplomacy",
+    "disabledevice",
+    "disguise",
+    "escapeArtist",
+    "fly",
+    "handleAnimal",
+    "heal",
+    "knowledge_arcana",
+    "knowledge_Dungeoneering",
+    "knowledge_Engineering",
+    "knowledge_Geography",
+    "knowledge_history",
+    "knowledge_local",
+    "knowledge_nature",
+    "knowledge_nobility",
+    "knowledge_planes",
+    "knowledge_religion",
+    "linguistics",
+    "perception",
+    "perform_1",
+    "perform_2",
+    "profession_1",
+    "profession_2",
+    "ride",
+    "sense_motive",
+    "sleight_of_hand",
+    "spellcraft",
+    "stealth",
+    "survival",
+    "swim",
+    "use_magic_device",
 ];
 
 static SHEET_DEP_MAP: [&'static [SheetField]; SHEET_NUM_STATS] = [
     &[SheetField::Strength],
     &[SheetField::StrengthMod],
-    &[SheetField::Attack],
+    &[SheetField::Attack, SheetField::climb, SheetField::swim],
     &[SheetField::Dexterity],
     &[SheetField::DexterityMod],
-    &[SheetField::AC],
+    &[
+        SheetField::AC,
+        SheetField::acrobatics,
+        SheetField::disabledevice,
+        SheetField::escapeArtist,
+        SheetField::fly,
+        SheetField::ride,
+        SheetField::sleight_of_hand,
+        SheetField::stealth,
+    ],
     &[SheetField::Wisdom],
     &[SheetField::WisdomMod],
     &[],
@@ -101,6 +222,42 @@ static SHEET_DEP_MAP: [&'static [SheetField]; SHEET_NUM_STATS] = [
     &[SheetField::IntelligenceMod],
     &[],
     &[SheetField::Attack],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
+    &[],
     &[],
     &[],
 ];
@@ -126,6 +283,42 @@ static SHEET_CALC_MAP: [fn(&[i32]) -> i32; SHEET_NUM_STATS] = [
     |vals| vals[SheetField::Intelligence as usize] / 2 - 5,
     |vals| vals[SheetField::BAB as usize],
     |vals| vals[SheetField::BAB as usize] + vals[SheetField::StrengthMod as usize],
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
+    |vals| vals[SheetField::DexterityMod as usize] + 10,
     |vals| vals[SheetField::DexterityMod as usize] + 10,
 ];
 
@@ -153,4 +346,73 @@ pub fn calc_route(val_map: &mut [i32], field: SheetField, new_val: i32) -> Vec<S
     }
 
     updated_fields
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Default)]
+#[serde(untagged)]
+pub enum Formula {
+    #[default]
+    #[serde(rename = "static")]
+    Static,
+    Single(String),
+    Multiple(Vec<String>),
+}
+
+impl Formula {
+    fn get_deps(&self) -> Vec<String> {
+        match self {
+            Self::Static => vec![],
+            Self::Single(s) => {
+                let re = Regex::new(r"[a-z_]+\[(?P<stat_mod>[a-z_]+)\]|(?P<stat>[a-z_]+)").unwrap();
+                let mut deps = vec![];
+                re.captures_iter(s)
+                    .map(|c| c.name("stat"))
+                    .for_each(|mat| {
+
+                        if let Some(stat) = mat {
+                            deps.push(stat.as_str().to_string());
+                        }
+                    });
+                deps
+            }
+            Self::Multiple(_) => vec![],
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
+pub struct Stat {
+    pub id: String,
+    pub name: String,
+    #[serde(default)]
+    pub formula: Formula,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
+pub struct Class {
+    pub uuid: String,
+    pub id: String,
+    pub name: String,
+    pub stats: Vec<Stat>,
+    pub bab: f32,
+}
+
+mod test {
+    use super::*;
+
+    #[test]
+    fn parse_base_class() {
+        let f = std::fs::read_to_string("./data/classes/base.yaml").unwrap();
+        println!("{:?}", f);
+
+        let mut class: Class = yaml_serde::from_str(&f).unwrap();
+        println!("{:?}", class);
+
+        assert_eq!(
+            class.stats[2].formula.get_deps(),
+            vec!["temp_strength", "base_strength"]
+        );
+
+        panic!();
+    }
 }

@@ -1,0 +1,17 @@
+uuid: ----
+id: base_class
+name: Base
+stats:
+  - id: base_strength
+    name: Base Strength
+  - id: temp_strength
+    name: Temporary Strength
+  - id: strength
+    name: Strength
+    formula:
+      - temp_strength
+      - base_strength + modifiers[strength]
+  - id: strength_modifier
+    name: Strength Modifier
+    formula: strength / 2 - 5
+bab: 0.5

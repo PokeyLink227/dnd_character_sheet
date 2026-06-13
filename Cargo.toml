@@ -7,6 +7,7 @@ edition = "2024"
 askama = "0.16.0"
 axum = { version = "0.8.9", features = ["http2"] }
 axum-login = "0.18.0"
+regex = "1.12.3"
 serde = "1.0.228"
 tokio = { version = "1.52.1", features = ["macros", "rt-multi-thread"] }
 tower = "0.5.3"
@@ -15,3 +16,4 @@ tower-sessions = { version = "0.15.0", features = ["memory-store"] }
 tower-sessions-file-store = "0.2.0"
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+yaml_serde = "0.10.4"

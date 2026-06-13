@@ -1,0 +1,33 @@
+.top-navbar {
+    background-color: var(--color-slate-800);
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: space-between;
+}
+
+.top-navbar .navbar-actions {
+    display: flex;
+    flex-direction: row;
+}
+
+.top-navbar .navbar-logo {
+    padding: 0.75rem 0.5rem;
+}
+
+.top-navbar .user-dropdown {
+    padding: 0.75rem 0.5rem;
+}
+
+.nav-button {
+    color: var(--color-slate-100);
+    padding: 0.75rem 0.5rem;
+}
+
+.nav-button:hover {
+    background: var(--color-slate-600);
+}
+
+.nav-button:focus {
+    background: var(--color-slate-500);
+}

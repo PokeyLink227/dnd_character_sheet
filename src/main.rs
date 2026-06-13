@@ -53,7 +53,9 @@ async fn main() {
     let assets_path = std::env::current_dir().unwrap();
 
     let mut val_map: [i32; SHEET_NUM_STATS] = [
-        17, 17, 4, 17, 17, 4, 17, 17, 4, 17, 17, 4, 17, 17, 4, 17, 17, 4, 8, 0, 14,
+        17, 17, 4, 17, 17, 4, 17, 17, 4, 17, 17, 4, 17, 17, 4, 17, 17, 4, 8, 0, 14, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1,
     ];
     let temp_calc_route_wrapper =
         async move |auth_session: AuthSession, body: String| -> Response {

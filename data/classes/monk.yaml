@@ -1,0 +1,68 @@
+uuid: ----
+id: class_monk
+name: Monk
+resources:
+  - id: ki
+    name: ki
+    requirements:
+      - monk_level > 3
+    recharge_on: long_rest
+    minimum: 0
+    maximum: monk_level / 2 + wisdom_modifer
+saves:
+  fortitude:
+    - 2
+    - 3
+    - 3
+    - 4
+    - 4
+    - 5
+modifiers:
+  - id: monk_ac_bonus
+    requirements:
+      - contition: unarmored
+      - condition: unencumbered
+    formula: monk_level / 4
+    target: ac
+  - id: fast_movement
+    requirements:
+      - contition: unarmored
+      - condition: unencumbered
+    formula: monk_level / 3 * 10
+    target: movement_speed
+abilities:
+  - id: improved_unarmed_attacks
+    name: Improved Unarmed Attacks
+    requirements: none
+    target: unarmed_damage
+    table:
+      input: monk_level
+      values:
+        - 1d6
+        - 1d6
+        - 1d6
+        - 1d8
+        - 1d8
+        - 1d8
+        - 1d8
+        - 1d10
+        - 1d10
+        - 1d10
+        - 1d10
+        - 2d6
+        - 2d6
+        - 2d6
+        - 2d6
+        - 2d8
+        - 2d8
+        - 2d8
+        - 2d8
+        - 2d10
+attacks:
+  - id: flurry_of_blows
+    name: Flurry of Blows
+    tags:
+      - unarmed
+    bab: monk_level - 2
+    damage: unarmed_damage
+bab: 0.75

@@ -1,0 +1,197 @@
+@import "tailwindcss";
+@import "../templates/navbase.css";
+
+* {
+    box-sizing: border-box;
+}
+
+input {
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    background: var(--color-slate-950);
+    color: var(--color-slate-100);
+}
+
+#content-wrapper {
+    height: 100%;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Stat Card Styling */
+
+.primary-stat-card {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    width: 7rem;
+    height: 7rem;
+    border: var(--primary-stat-card-outer-border-width) solid red;
+    border-radius: var(--primary-stat-card-border-radius);
+}
+
+.primary-stat-card .modifier {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+
+.primary-stat-card .bottom-bar {
+    display: flex;
+    flex-direction: row;
+}
+
+.primary-stat-card .bottom-bar > * {
+    border-radius: 0;
+    flex-grow: 1;
+    text-align: center;
+    width: 33%;
+    height: 1.5rem;
+    border: var(--primary-stat-card-inner-border-width) solid red;
+    border-bottom: none;
+}
+
+.primary-stat-card .bottom-bar > *:focus {
+    outline: none;
+}
+
+.primary-stat-card .base {
+    border-left: none;
+    border-right: none;
+}
+
+.primary-stat-card .total {
+    border-right: none;
+    border-left: none;
+}
+
+.primary-stat-card .bottom-bar input:focus {
+}
+
+.skills-card {
+    display: grid;
+    grid-template-columns: auto max-content 4rem;
+    row-gap: 0.25rem;
+}
+
+.skills-card .label {
+    padding-left: 0.5rem;
+}
+
+.skills-card input {
+    width: 100%;
+    text-align: center;
+}
+.skills-card input:hover {
+    background: var(--color-slate-600);
+}
+.skills-card input:focus {
+    outline: none;
+    background: var(--color-slate-500);
+}
+
+.skills-card .header {
+    padding-inline: 0.25rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.skills-card .rank span {
+    display: block;
+    width: 100%;
+}
+
+.skills-card .total {
+    width: 100%;
+    text-align: center;
+}
+
+.skills-card > * {
+    background: var(--color-slate-800);
+}
+
+.skills-card > .header {
+    background: var(--color-slate-700);
+}
+
+
+
+
+
+
+.card {
+    padding: 0.5rem;
+    border: 1px solid oklch(44.6% 0.043 257.281);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.card > .label {
+
+}
+
+/* sheet styles */
+
+.main-sheet {
+    flex-grow: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.main-sheet > .stats-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.main-sheet > .stats-area > .main-stats {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: center;
+}
+
+@media (width < 70rem) {
+    .main-sheet {
+        flex-direction: column;
+    }
+    .main-sheet > .stats-area > .main-stats {
+        gap: 1rem;
+    }
+}
+
+.main-sheet > .stats-area > .other-stats {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.main-sheet > .stats-area > .other-stats > * {
+    flex: 1;
+}
+
+.rhd {
+    border: 1px solid red;
+    }

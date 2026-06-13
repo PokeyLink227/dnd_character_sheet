@@ -47,6 +47,13 @@
         - e.g. Str Mod. = (Base Strength + Strength Modifiers - 10) / 2
             - (I know this is the wrong formula)
 
+### Initial list of formulas needed
+- sum of fixed list
+- sum of modifiers
+- x / 2 - 5
+- if b defined then b else a
+- multiply by fraction
+
 ### Proposed site layout
 
 ```

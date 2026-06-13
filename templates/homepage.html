@@ -34,20 +34,27 @@
 {% endmacro %}
 
 {% macro skill_row(skill) %}
-    <span class="label">{{ skill | capitalize }}</span>
-    <div
-        hx-swap-oob="innerHtml"
-        class="total"
-        id="stat-{{ skill }}"
-    >
-        17
+    <span class="label">
+        {{ skill | capitalize }}
+    </span>
+    <div>
+        <div
+            hx-swap-oob="innerHtml"
+            class="total"
+            id="{{ skill }}"
+        >
+            17
+        </div>
     </div>
-    <input
-        class="rank"
-        hx-post="/calculate"
-        name="{{ skill }}_rank"
-        id="{{ skill }}_rank"
-    />
+    <div class="rank">
+        <span>
+        <input
+            hx-post="/calculate"
+            name="{{ skill }}_rank"
+            id="{{ skill }}_rank"
+        />
+        </span>
+    </div>
 {% endmacro %}
 
 {% block content %}
@@ -62,7 +69,7 @@
             {{ stat_card("charisma") }}
         </div>
         <div class="other-stats">
-            <div class="card skills-card">
+            <div class="skills-card">
                 <span class="header">Skill</span>
                 <span class="header">Score</span>
                 <span class="header">Ranks</span>

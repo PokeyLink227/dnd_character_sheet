@@ -26,8 +26,10 @@
 
 .nav-button:hover {
     background: var(--color-slate-600);
+    color: var(--color-green-500);
 }
 
 .nav-button:focus {
     background: var(--color-slate-500);
+    color: var(--color-green-300);
 }

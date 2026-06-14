@@ -103,6 +103,11 @@ html, body {
     animation-timing-function: ease-out;
 }
 
+.main-sheet:has(.primary-stat-card .label:hover) .skills-card .label {
+    color: var(--color-cyan-500);
+}
+
+
 
 .skills-card {
     display: grid;

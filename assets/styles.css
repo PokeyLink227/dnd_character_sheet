@@ -8,6 +8,7 @@
     monospace;
     --color-green-300: oklch(87.1% 0.15 154.449);
     --color-green-500: oklch(72.3% 0.219 149.579);
+    --color-cyan-500: oklch(71.5% 0.143 215.221);
     --color-slate-100: oklch(96.8% 0.007 247.896);
     --color-slate-500: oklch(55.4% 0.046 257.417);
     --color-slate-600: oklch(44.6% 0.043 257.281);
@@ -310,6 +311,9 @@ html, body {
   animation-name: flash-updated;
   animation-duration: 1s;
   animation-timing-function: ease-out;
+}
+.main-sheet:has(.primary-stat-card .label:hover) .skills-card .label {
+  color: var(--color-cyan-500);
 }
 .skills-card {
   display: grid;
